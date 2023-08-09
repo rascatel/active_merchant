@@ -272,7 +272,7 @@ module ActiveMerchant #:nodoc:
           if credit_card.verification_value?
             xml.tag! 'CVD_Presence_Ind', '1'
             # xml.tag! 'VerificationStr2', credit_card.verification_value
-            xml.tag! 'CVDCode', '344'
+            xml.tag! 'CVDCode', credit_card.verification_value
           end
 
           add_card_authentication_data(xml, options)
@@ -292,10 +292,10 @@ module ActiveMerchant #:nodoc:
       end
 
       def add_card_authentication_data(xml, options)
-        xml.tag! 'CVD_Presence_Ind', '1'
+        # xml.tag! 'CVD_Presence_Ind', '1'
         # xml.tag! 'CAVV', options[:cavv]
         # xml.tag! 'VerificationStr2', options[:cavv]
-        xml.tag! 'CVDCode', options[:cavv]
+        # xml.tag! 'CVDCode', options[:cavv]
         xml.tag! 'XID', options[:xid]
       end
 
