@@ -297,6 +297,7 @@ module ActiveMerchant #:nodoc:
         # xml.tag! 'CAVV', options[:cavv]
         # xml.tag! 'VerificationStr2', options[:cavv]
         # xml.tag! 'CVDCode', options[:cavv]
+        xml.tag! 'CVV', options[:cavv]
         xml.tag! 'XID', options[:xid]
       end
 
