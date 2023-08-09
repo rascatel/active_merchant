@@ -204,6 +204,7 @@ module ActiveMerchant #:nodoc:
         add_credit_card(xml, credit_card, options)
         add_customer_data(xml, options)
 
+        xml.tag! 'Auth', @options[:auth] == true
         xml.target!
       end
 
