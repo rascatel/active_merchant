@@ -293,11 +293,10 @@ module ActiveMerchant #:nodoc:
       end
 
       def add_card_authentication_data(xml, options)
-        # xml.tag! 'CVD_Presence_Ind', '1'
+        xml.tag! 'CVD_Presence_Ind', '1'
         # xml.tag! 'CAVV', options[:cavv]
-        # xml.tag! 'VerificationStr2', options[:cavv]
+        xml.tag! 'VerificationStr2', options[:cavv]
         # xml.tag! 'CVDCode', options[:cavv]
-        xml.tag! 'CVV', options[:cavv]
         xml.tag! 'XID', options[:xid]
       end
 
