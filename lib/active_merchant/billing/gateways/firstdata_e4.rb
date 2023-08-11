@@ -289,7 +289,7 @@ module ActiveMerchant #:nodoc:
 
         if options[:cvv]
           xml.tag! 'CVD_Presence_Ind', '1'
-          xml.tag! 'VerificationStr2', credit_card.verification_value
+          xml.tag! 'VerificationStr2', options[:cvv]
         end
       end
 
