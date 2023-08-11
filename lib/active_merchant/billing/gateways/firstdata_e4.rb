@@ -273,12 +273,26 @@ module ActiveMerchant #:nodoc:
           if credit_card.verification_value?
             xml.tag! 'CVD_Presence_Ind', '1'
             xml.tag! 'VerificationStr2', credit_card.verification_value
-            # xml.tag! 'CVDCode', credit_card.verification_value
           end
 
           add_card_authentication_data(xml, options)
         end
       end
+
+      def add_credit_card_token_verification_strings(xml, options)
+        address = options[:billing_address] || options[:address]
+        if address
+          address_values = []
+          %i[address1 zip city state country].each { |part| address_values << address[part].to_s.tr("\r\n", ' ').strip }
+          xml.tag! 'VerificationStr1', address_values.join('|')
+        end
+
+        if options[:cvv]
+          xml.tag! 'CVD_Presence_Ind', '1'
+          xml.tag! 'VerificationStr2', credit_card.verification_value
+        end
+      end
+
 
       def add_network_tokenization_credit_card(xml, credit_card)
         case card_brand(credit_card).to_sym
@@ -293,11 +307,7 @@ module ActiveMerchant #:nodoc:
       end
 
       def add_card_authentication_data(xml, options)
-        xml.tag! 'CVD_Presence_Ind', '1'
-        # xml.tag! 'CAVV', options[:cavv]
-        xml.tag! 'VerificationStr2', options[:cavv]
-        # xml.tag! 'CVDCode', options[:cavv]
-        xml.tag! 'VerificationStr1', 'Z;90210;;;'
+        xml.tag! 'CAVV', options[:cavv]
         xml.tag! 'XID', options[:xid]
       end
 
@@ -315,6 +325,8 @@ module ActiveMerchant #:nodoc:
         xml.tag! 'Expiry_Date', expdate(credit_card)
         xml.tag! 'CardHoldersName', credit_card.name
         xml.tag! 'CardType', card_type(credit_card.brand)
+        
+        add_credit_card_token_verification_strings(xml, options)
         add_card_authentication_data(xml, options)
       end
 
